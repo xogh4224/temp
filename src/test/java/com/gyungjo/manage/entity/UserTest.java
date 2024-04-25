@@ -62,4 +62,23 @@ public class UserTest {
         List<User> changed = userRepository.findAll();
         assertEquals(changed.get(0).getPassword() , changePassword);
     }
+
+    @Test
+    @DisplayName("생성자, 수정자 테스트 by JPA Auditing")
+    public void t3(){
+        //given
+        String username = "test";
+        String password = "1";
+        String email = "yong@test.com";
+        User user = User.builder().username(username).password(password).email(email).build();
+        userRepository.save(user);
+
+        //when
+        User findUser = userRepository.findByUsername(user.getUsername());
+
+        //then
+        System.out.println("생성자 = " + findUser.getCreatedBy());
+        System.out.println("수정자 = " + findUser.getCreatedBy());
+    }
+
 }
