@@ -1,6 +1,7 @@
 package com.gyungjo.manage.entity;
 
 
+import com.gyungjo.manage.config.JpaConfig;
 import com.gyungjo.manage.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest //jpa 에 필요한 bean만 올리기 때문에 @SpringBootTest에 비해 속도가 빠름
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) //실제 DB 사용하기 위한 어노테이션
+@Import(JpaConfig.class)
 public class UserTest {
     @Autowired
     private UserRepository userRepository;
@@ -77,8 +80,8 @@ public class UserTest {
         User findUser = userRepository.findByUsername(user.getUsername());
 
         //then
-        System.out.println("생성자 = " + findUser.getCreatedBy());
-        System.out.println("수정자 = " + findUser.getCreatedBy());
+        assertNotNull(findUser.getCreatedBy());
+        assertNotNull(findUser.getUpdatedBy());
     }
 
 }
